@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+     <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -33,6 +34,44 @@
   .live-badge { display: flex; align-items: center; gap: 6px; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent3); border: 1px solid rgba(127,255,110,0.3); padding: 4px 10px; border-radius: 20px; }
   .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent3); animation: blink 1s infinite; }
   @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.2; } }
+  .alert-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text-dim); padding: 6px 14px; border-radius: 8px; font-family: 'Space Mono', monospace; font-size: 11px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+  .alert-btn:hover, .alert-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(245,200,66,0.08); }
+  .score-badge { display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; font-family:'Space Mono',monospace; font-size:13px; font-weight:700; flex-shrink:0; }
+  .score-a { background:rgba(127,255,110,0.2); color:var(--long); border:2px solid var(--long); }
+  .score-b { background:rgba(127,255,110,0.1); color:#b8ff9f; border:2px solid #b8ff9f; }
+  .score-c { background:rgba(245,200,66,0.15); color:var(--neutral); border:2px solid var(--neutral); }
+  .score-d { background:rgba(255,59,107,0.1); color:#ff8fa8; border:2px solid #ff8fa8; }
+  .score-f { background:rgba(255,59,107,0.2); color:var(--short); border:2px solid var(--short); }
+  .score-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:20px; }
+  .score-big { font-family:'Space Mono',monospace; font-size:56px; font-weight:700; line-height:1; }
+  .score-label { font-size:10px; letter-spacing:2px; color:var(--text-dim); font-family:'Space Mono',monospace; text-transform:uppercase; margin-bottom:4px; }
+  .score-sub-row { display:flex; justify-content:space-between; font-size:11px; margin-bottom:5px; }
+  .score-sub-label { color:var(--text-dim); font-family:'Space Mono',monospace; }
+  .score-sub-val { font-family:'Space Mono',monospace; font-weight:700; }
+  .score-mini-bar { height:3px; background:var(--surface2); border-radius:2px; margin-bottom:9px; overflow:hidden; }
+  .score-mini-fill { height:100%; border-radius:2px; }
+  .alert-modal { display:none; position:fixed; inset:0; background:rgba(7,11,18,0.85); backdrop-filter:blur(8px); z-index:500; align-items:center; justify-content:center; }
+  .alert-modal.open { display:flex; }
+  .alert-box { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:28px; width:480px; max-width:95vw; max-height:80vh; overflow-y:auto; }
+  .alert-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+  .alert-title-text { font-size:16px; font-weight:700; }
+  .alert-close { background:none; border:none; color:var(--text-dim); font-size:22px; cursor:pointer; line-height:1; }
+  .alert-close:hover { color:var(--text); }
+  .alert-desc { font-size:12px; color:var(--text-dim); margin-bottom:18px; line-height:1.5; padding:10px; background:rgba(245,200,66,0.06); border-radius:8px; border-left:3px solid var(--gold); }
+  .alert-item { display:flex; align-items:center; justify-content:space-between; padding:12px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; margin-bottom:8px; }
+  .alert-item-ticker { font-family:'Space Mono',monospace; font-size:13px; font-weight:700; color:var(--accent); }
+  .alert-item-date { font-size:10px; color:var(--text-dim); font-family:'Space Mono',monospace; margin-top:2px; }
+  .alert-toggle { position:relative; width:40px; height:22px; cursor:pointer; }
+  .alert-toggle input { opacity:0; width:0; height:0; position:absolute; }
+  .alert-slider { position:absolute; inset:0; background:var(--border); border-radius:22px; transition:0.3s; }
+  .alert-slider:before { content:''; position:absolute; width:16px; height:16px; left:3px; top:3px; background:var(--text-dim); border-radius:50%; transition:0.3s; }
+  .alert-toggle input:checked + .alert-slider { background:var(--gold); }
+  .alert-toggle input:checked + .alert-slider:before { transform:translateX(18px); background:var(--bg); }
+  .notif-banner { display:none; position:fixed; top:80px; right:24px; background:var(--surface); border:1px solid var(--gold); border-radius:12px; padding:16px 20px; z-index:600; max-width:320px; box-shadow:0 8px 32px rgba(0,0,0,0.5); animation:slideIn 0.3s ease; }
+  @keyframes slideIn { from { transform:translateX(120%); opacity:0; } to { transform:translateX(0); opacity:1; } }
+  .notif-banner.show { display:block; }
+  .notif-title { font-size:13px; font-weight:700; color:var(--gold); margin-bottom:4px; }
+  .notif-body { font-size:12px; color:var(--text-dim); line-height:1.5; }
   .app { position: relative; z-index: 1; display: grid; grid-template-columns: 320px 1fr; min-height: calc(100vh - 65px); }
   .sidebar { border-right: 1px solid var(--border); padding: 24px; overflow-y: auto; background: rgba(13,21,32,0.6); }
   .section-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; }
@@ -158,9 +197,28 @@
     <div class="logo-text">Earnings<span>Edge</span></div>
   </div>
   <div class="header-right">
+    <button class="alert-btn" id="alertBtn" onclick="openAlerts()">🔔 Alertas</button>
     <div class="live-badge"><div class="live-dot"></div>MARKET DATA LIVE</div>
   </div>
 </header>
+
+<!-- ALERT MODAL -->
+<div class="alert-modal" id="alertModal">
+  <div class="alert-box">
+    <div class="alert-header">
+      <div class="alert-title-text">🔔 Alertas de Earnings</div>
+      <button class="alert-close" onclick="closeAlerts()">×</button>
+    </div>
+    <div class="alert-desc">Activa las alertas para recibir una notificación del navegador 24h antes de que una empresa de tu watchlist presente resultados. Debes tener la app abierta o en segundo plano para recibirlas.</div>
+    <div id="alertList"></div>
+  </div>
+</div>
+
+<!-- NOTIFICATION BANNER -->
+<div class="notif-banner" id="notifBanner">
+  <div class="notif-title" id="notifTitle"></div>
+  <div class="notif-body" id="notifBody"></div>
+</div>
 
 <div class="app">
   <aside class="sidebar">
@@ -638,6 +696,137 @@ function changeMonth(dir) {
 
 document.getElementById("tickerInput").addEventListener("keydown", e => { if (e.key === "Enter") addStock(); });
 
+// ── SCORE ENGINE ─────────────────────────────────────────────────
+function calcScore(ticker) {
+  const d = STOCK_DATA[ticker];
+  if (!d) return {score:0, grade:"F", color:"var(--short)", breakdown:{}};
+
+  // 1. Beat Rate (0-25 pts)
+  const beatCount = d.history.filter(h => h.beat).length;
+  const beatPct = beatCount / d.history.length;
+  const beatScore = Math.round(beatPct * 25);
+
+  // 2. Analyst Consensus Buy % (0-25 pts)
+  const buyScore = Math.round((d.buyPct / 100) * 25);
+
+  // 3. Upside potential (0-25 pts): 0% → 0pts, 50%+ → 25pts
+  const upsideClamped = Math.max(-10, Math.min(50, d.upside));
+  const upsideScore = Math.round(((upsideClamped + 10) / 60) * 25);
+
+  // 4. Signal conviction (0-25 pts)
+  const sigScore = {long: 22, neutral: 12, short: 3}[d.signal] || 0;
+
+  const total = beatScore + buyScore + upsideScore + sigScore;
+
+  let grade, color;
+  if (total >= 85) { grade = "A"; color = "var(--long)"; }
+  else if (total >= 70) { grade = "B"; color = "#b8ff9f"; }
+  else if (total >= 55) { grade = "C"; color = "var(--neutral)"; }
+  else if (total >= 40) { grade = "D"; color = "#ff8fa8"; }
+  else { grade = "F"; color = "var(--short)"; }
+
+  return { score: total, grade, color,
+    breakdown: { beatScore, buyScore, upsideScore, sigScore,
+      beatPct: Math.round(beatPct*100), buyPct: d.buyPct,
+      upside: d.upside, signal: d.signal }
+  };
+}
+
+// ── ALERTS ENGINE ─────────────────────────────────────────────────
+let alertsEnabled = JSON.parse(localStorage.getItem("ee_alerts") || "{}");
+
+function saveAlerts() { localStorage.setItem("ee_alerts", JSON.stringify(alertsEnabled)); }
+
+function openAlerts() {
+  const modal = document.getElementById("alertModal");
+  modal.classList.add("open");
+  renderAlertList();
+}
+
+function closeAlerts() {
+  document.getElementById("alertModal").classList.remove("open");
+}
+
+function renderAlertList() {
+  const el = document.getElementById("alertList");
+  if (watchlist.length === 0) {
+    el.innerHTML = '<div style="color:var(--text-dim);font-size:13px;text-align:center;padding:20px">Añade empresas a tu watchlist primero</div>';
+    return;
+  }
+  const sorted = [...watchlist].filter(t => STOCK_DATA[t]).sort((a,b) => STOCK_DATA[a].earningsDate - STOCK_DATA[b].earningsDate);
+  el.innerHTML = sorted.map(t => {
+    const d = STOCK_DATA[t];
+    const dateStr = d.earningsDate.toLocaleDateString("es-ES",{day:"2-digit",month:"short",year:"numeric"});
+    const isOn = !!alertsEnabled[t];
+    const hoursUntil = Math.round((d.earningsDate - new Date()) / 36e5);
+    const urgency = hoursUntil <= 24 && hoursUntil > 0 ? ' style="border-color:rgba(245,200,66,0.5)"' : '';
+    return '<div class="alert-item"' + urgency + '>' +
+      '<div><div class="alert-item-ticker">' + t +
+        (hoursUntil <= 24 && hoursUntil > 0 ? ' <span style="color:var(--gold);font-size:9px">⚡ HOY/MAÑANA</span>' : '') +
+      '</div><div class="alert-item-date">📅 ' + dateStr + ' · ' + d.time + '</div></div>' +
+      '<label class="alert-toggle"><input type="checkbox" ' + (isOn?"checked":"") + ' onchange="toggleAlert(\'' + t + '\',this.checked)"><span class="alert-slider"></span></label>' +
+      '</div>';
+  }).join("");
+
+  // Update header button state
+  const anyOn = Object.values(alertsEnabled).some(v => v);
+  document.getElementById("alertBtn").classList.toggle("active", anyOn);
+}
+
+function toggleAlert(ticker, enabled) {
+  alertsEnabled[ticker] = enabled;
+  saveAlerts();
+  if (enabled) {
+    requestNotificationPermission();
+    showToast("🔔 Alerta activada para " + ticker);
+  } else {
+    showToast("🔕 Alerta desactivada para " + ticker);
+  }
+  renderAlertList();
+}
+
+function requestNotificationPermission() {
+  if ("Notification" in window && Notification.permission === "default") {
+    Notification.requestPermission();
+  }
+}
+
+function checkAlerts() {
+  const now = new Date();
+  Object.keys(alertsEnabled).forEach(ticker => {
+    if (!alertsEnabled[ticker] || !STOCK_DATA[ticker]) return;
+    const d = STOCK_DATA[ticker];
+    const hoursUntil = (d.earningsDate - now) / 36e5;
+    const key = "ee_notified_" + ticker;
+    if (hoursUntil > 0 && hoursUntil <= 24 && !sessionStorage.getItem(key)) {
+      sessionStorage.setItem(key, "1");
+      fireAlert(ticker, d, Math.round(hoursUntil));
+    }
+  });
+}
+
+function fireAlert(ticker, d, hours) {
+  // In-app banner
+  const banner = document.getElementById("notifBanner");
+  document.getElementById("notifTitle").textContent = "⚡ " + ticker + " presenta resultados en ~" + hours + "h";
+  document.getElementById("notifBody").textContent = d.name + " · " + d.time + "\nEPS Est: $" + d.epsEst + " · Señal: " + d.signal.toUpperCase();
+  banner.classList.add("show");
+  setTimeout(() => banner.classList.remove("show"), 8000);
+
+  // Browser notification
+  if ("Notification" in window && Notification.permission === "granted") {
+    new Notification("EarningsEdge ⚡ " + ticker, {
+      body: d.name + " presenta resultados en ~" + hours + "h\nEPS Est: $" + d.epsEst,
+      icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>"
+    });
+  }
+}
+
+// Check alerts every minute
+setInterval(checkAlerts, 60000);
+checkAlerts(); // Check on load too
+
+// ── RENDER ───────────────────────────────────────────────────────
 function render() { renderWatchlist(); renderCalendar(); renderUpcoming(); renderAnalysis(); }
 
 function renderWatchlist() {
@@ -646,10 +835,13 @@ function renderWatchlist() {
   el.innerHTML = watchlist.map(t => {
     const d = STOCK_DATA[t]; if (!d) return "";
     const dateStr = d.earningsDate.toLocaleDateString("es-ES", {day:"2-digit",month:"short"});
+    const sc = calcScore(t);
     return '<div class="stock-card ' + (activeStock===t?"active":"") + '" onclick="selectStock(\'' + t + '\')">' +
       '<button class="remove-btn" onclick="event.stopPropagation();removeStock(\'' + t + '\')">✕</button>' +
       '<div class="stock-header"><div class="stock-ticker">' + t + '</div>' +
-      '<span class="signal-badge signal-' + d.signal + '">' + d.signal.toUpperCase() + '</span></div>' +
+      '<div style="display:flex;gap:6px;align-items:center">' +
+      '<span class="score-badge score-' + sc.grade.toLowerCase() + '">' + sc.grade + '</span>' +
+      '<span class="signal-badge signal-' + d.signal + '">' + d.signal.toUpperCase() + '</span></div></div>' +
       '<div class="stock-name">' + d.name + '</div>' +
       '<div class="stock-meta"><div class="earnings-date">📅 ' + dateStr + '</div>' +
       '<div style="font-family:\'Space Mono\',monospace;font-size:12px">$' + d.price + '</div></div></div>';
@@ -708,12 +900,28 @@ function renderAnalysis() {
     return;
   }
   const d = STOCK_DATA[activeStock];
+  const sc = calcScore(activeStock);
   const dateStr = d.earningsDate.toLocaleDateString("es-ES",{day:"2-digit",month:"long",year:"numeric"});
   const signalClass = d.signal + "-signal";
   const signalText = {long:"LONG 🚀",short:"SHORT 🔻",neutral:"NEUTRAL ⚖️"}[d.signal];
   const upColor = d.upside >= 0 ? "var(--long)" : "var(--short)";
   const beatCount = d.history.filter(h => h.beat).length;
   const beatPct = Math.round(beatCount / d.history.length * 100);
+
+  // Score breakdown bars
+  const scoreItems = [
+    {label:"Beat Rate", val:sc.breakdown.beatScore, max:25, display:sc.breakdown.beatPct+"%"},
+    {label:"Consenso Analistas", val:sc.breakdown.buyScore, max:25, display:sc.breakdown.buyPct+"% Buy"},
+    {label:"Upside Potencial", val:sc.breakdown.upsideScore, max:25, display:(sc.breakdown.upside>=0?"+":"")+sc.breakdown.upside+"%"},
+    {label:"Señal Convicción", val:sc.breakdown.sigScore, max:25, display:sc.breakdown.signal.toUpperCase()},
+  ];
+  const scoreBreakdown = scoreItems.map(item => {
+    const pct = Math.round((item.val/item.max)*100);
+    const barColor = pct>=80?"var(--long)":pct>=50?"var(--neutral)":"var(--short)";
+    return '<div class="score-sub-row"><span class="score-sub-label">' + item.label + '</span><span class="score-sub-val">' + item.val + '/25 · ' + item.display + '</span></div>' +
+      '<div class="score-mini-bar"><div class="score-mini-fill" style="width:' + pct + '%;background:' + barColor + '"></div></div>';
+  }).join("");
+
   const histBars = d.history.map(h => {
     const absH = Math.abs(h.pct);
     const maxH = Math.max(...d.history.map(x => Math.abs(x.pct)));
@@ -736,10 +944,28 @@ function renderAnalysis() {
       '<div style="font-family:\'Space Mono\',monospace;font-size:11px;color:var(--gold);margin-top:6px">📅 Resultados: ' + dateStr + ' · ' + d.time + '</div></div>' +
       '<div style="text-align:right"><div style="font-family:\'Space Mono\',monospace;font-size:24px;font-weight:700">$' + d.price + '</div>' +
       '<div style="font-size:11px;color:var(--text-dim);margin-top:2px">Precio actual</div></div></div>' +
+
+    // SCORE CARD
+    '<div class="score-card">' +
+      '<div style="display:flex;gap:20px;align-items:center">' +
+        '<div style="text-align:center;flex-shrink:0">' +
+          '<div class="score-label">Score</div>' +
+          '<div class="score-big" style="color:' + sc.color + '">' + sc.score + '</div>' +
+          '<div style="margin-top:4px"><span class="score-badge score-' + sc.grade.toLowerCase() + '" style="width:44px;height:44px;font-size:18px">' + sc.grade + '</span></div>' +
+        '</div>' +
+        '<div style="flex:1">' +
+          '<div class="score-label" style="margin-bottom:10px">Desglose (4 × 25 pts)</div>' +
+          scoreBreakdown +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+
+    // SIGNAL
     '<div class="signal-card ' + signalClass + '"><div class="signal-glow"></div>' +
       '<div style="font-size:11px;letter-spacing:3px;color:var(--text-dim);font-family:\'Space Mono\',monospace">SEÑAL DE TRADING</div>' +
       '<div class="signal-main ' + d.signal + '-text">' + signalText + '</div>' +
       '<div class="signal-reason">' + d.signalReason + '</div></div>' +
+
     '<div class="analysis-grid">' +
       '<div class="analysis-card"><div class="card-title">EPS Estimado</div><div class="big-number">' + (d.epsEst >= 0 ? "$" : "-$") + Math.abs(d.epsEst) + '</div><div class="sub-text">Consenso ' + d.buyPct + '% analistas BUY</div></div>' +
       '<div class="analysis-card"><div class="card-title">Revenue Estimado</div><div class="big-number">$' + d.revEst + ' ' + d.revUnit + '</div><div class="sub-text">Expectativa de consenso</div></div>' +
@@ -754,6 +980,9 @@ function renderAnalysis() {
 }
 
 render();
+document.getElementById("alertModal").addEventListener("click", function(e) {
+  if (e.target === this) closeAlerts();
+});
 </script>
 </body>
 </html>
