@@ -545,6 +545,945 @@ const SD = {
   BE:{name:"Bloom Energy Corp.",price:24.8,earningsDate:new Date(2026,4,7),time:"After Close",epsEst:0.22,revEst:650.0,revUnit:"M",buyPct:60,holdPct:30,sellPct:10,priceTarget:38,upside:53.2,signal:"long",signalReason:"Backlog producto $6B (+2.5x YoY). Revenue 2025 +37% YoY. Guidance 2026: $3.1-3.3B (>50% growth). Energía limpia para data centers AI.",history:[{q:"Q1 25",beat:true,pct:4.2},{q:"Q2 25",beat:true,pct:5.8},{q:"Q3 25",beat:true,pct:8.4},{q:"Q4 25",beat:true,pct:35.9},{q:"Q1 26e",beat:true,pct:3.5},{q:"Q2 26e",beat:true,pct:5.0}],metrics:[["P/E Ratio","N/M"],["Backlog Producto","$6B (+2.5x)"],["Revenue 2025","$2.0B (+37%)"],["Guidance Rev 26","$3.1-3.3B"],["Adj. EPS 26e","$1.33-1.48"]]},
   "3CP":{name:"Xiaomi Corp. (Frankfurt)",price:3.48,earningsDate:new Date(2026,2,24),time:"Before Open",epsEst:0.39,revEst:125.5,revUnit:"B CNY",buyPct:82,holdPct:15,sellPct:3,priceTarget:4.80,upside:37.9,signal:"long",signalReason:"SUV eléctrico YU7 supera ventas Tesla Model Y en China. EV + smartphones + IoT = triple motor. 60 analistas Buy. Goldman Sachs target HKD 47.50.",history:[{q:"Q1 24",beat:true,pct:8.4},{q:"Q2 24",beat:true,pct:12.1},{q:"Q3 24",beat:true,pct:9.7},{q:"Q4 24",beat:true,pct:15.3},{q:"Q1 25",beat:true,pct:6.2},{q:"Q2 25",beat:true,pct:30.8}],metrics:[["P/E Ratio","18.3x"],["EV/EBITDA","12.1x"],["Margen Neto","6.8%"],["Deuda/Capital","0.3x"],["FCF Yield","3.1%"]]},
   DN3:{name:"Metaplanet Inc. (Frankfurt)",price:0.82,earningsDate:new Date(2026,2,17),time:"Before Open",epsEst:0.0,revEst:16.0,revUnit:"B JPY",buyPct:33,holdPct:34,sellPct:33,priceTarget:1.10,upside:34.1,signal:"neutral",signalReason:"'MicroStrategy japonés': 35.102 BTC en balance, objetivo 100k BTC en 2026. Revenue operativo +738% pero pérdida neta por mark-to-market BTC. Muy volátil.",history:[{q:"Q1 24",beat:true,pct:45.2},{q:"Q2 24",beat:true,pct:82.4},{q:"Q3 24",beat:false,pct:-31.2},{q:"Q4 24",beat:true,pct:28.7},{q:"Q1 25",beat:false,pct:-42.1},{q:"Q2 25",beat:true,pct:1694.5}],metrics:[["P/E Ratio","20x"],["BTC Holdings","35.102 BTC"],["Margen Operativo","70.6%"],["Volat. Semanal","18%"],["BTC Target 2026","100.000 BTC"]]}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EarningsEdge Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #05080f;
+  --surface: #0c1424;
+  --surface2: #111c2e;
+  --border: #1a2a40;
+  --accent: #00e5ff;
+  --gold: #f5c842;
+  --long: #7fff6e;
+  --short: #ff3b6b;
+  --neutral: #f5c842;
+  --text: #e8f0fe;
+  --text-dim: #6a839e;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'Syne',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  background-image:
+    radial-gradient(ellipse at 20% 20%, rgba(0,229,255,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(127,255,110,0.03) 0%, transparent 50%);
+}
+
+
+/* Grid bg */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(0,229,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.02) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;z-index:0;
+}
+
+/* ── HEADER ── */
+header{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 36px;
+  border-bottom:1px solid var(--border);
+  background:rgba(5,8,15,0.92);
+  backdrop-filter:blur(16px);
+}
+
+.logo{display:flex;align-items:center;gap:12px;font-weight:800;font-size:20px;letter-spacing:-0.5px;}
+.logo-hex{
+  width:34px;height:34px;background:var(--accent);
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+  animation:hexPulse 3s ease-in-out infinite;
+}
+@keyframes hexPulse{0%,100%{box-shadow:0 0 0 0 rgba(0,229,255,0.5)}50%{box-shadow:0 0 0 10px rgba(0,229,255,0)}}
+.logo em{color:var(--accent);font-style:normal;text-shadow:0 0 20px rgba(0,229,255,0.4);}
+.logo-ver{font-family:'Space Mono';font-size:9px;background:rgba(0,229,255,0.1);color:var(--accent);border:1px solid rgba(0,229,255,0.3);padding:3px 7px;border-radius:4px;letter-spacing:1px;}
+
+nav{display:flex;gap:4px;}
+.nav-btn{
+  background:none;border:1px solid transparent;color:var(--text-dim);
+  padding:8px 18px;border-radius:8px;font-family:'Syne';font-weight:700;font-size:12px;
+  letter-spacing:1px;cursor:pointer;transition:all 0.2s;
+}
+.nav-btn:hover{color:var(--text);border-color:var(--border);}
+.nav-btn.active{color:var(--accent);border-color:rgba(0,229,255,0.3);background:rgba(0,229,255,0.07);}
+
+.header-actions{display:flex;align-items:center;gap:10px;}
+.live-pill{display:flex;align-items:center;gap:5px;font-family:'Space Mono';font-size:10px;color:var(--long);border:1px solid rgba(127,255,110,0.25);padding:5px 10px;border-radius:20px;background:rgba(127,255,110,0.05);}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--long);animation:blink 1.2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+.alert-btn{
+  display:flex;align-items:center;gap:6px;
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--text-dim);padding:7px 14px;border-radius:8px;
+  font-family:'Space Mono';font-size:10px;cursor:pointer;transition:all 0.2s;
+}
+.alert-btn:hover,.alert-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(245,200,66,0.07);}
+
+/* ── LAYOUT ── */
+.app{
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:300px 1fr;
+  min-height:calc(100vh - 65px);
+}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  border-right:1px solid var(--border);
+  padding:20px;overflow-y:auto;
+  background:rgba(12,20,36,0.5);
+}
+
+.sec-label{
+  font-family:'Space Mono';font-size:9px;letter-spacing:3px;
+  color:var(--text-dim);text-transform:uppercase;margin-bottom:10px;
+}
+
+.search-row{display:flex;gap:8px;margin-bottom:20px;}
+.ticker-input{
+  flex:1;background:var(--surface2);border:1px solid var(--border);
+  color:var(--text);font-family:'Space Mono';font-size:13px;
+  padding:9px 13px;border-radius:8px;outline:none;text-transform:uppercase;
+  transition:border-color 0.2s;
+}
+.ticker-input::placeholder{color:var(--text-dim);text-transform:none;}
+.ticker-input:focus{border-color:var(--accent);}
+.add-btn{
+  background:var(--accent);color:#000;border:none;
+  padding:9px 14px;border-radius:8px;font-family:'Syne';
+  font-weight:800;font-size:13px;cursor:pointer;transition:all 0.2s;
+}
+.add-btn:hover{background:#00c8e0;transform:translateY(-1px);}
+
+/* Watch cards in sidebar */
+.watch-list{display:flex;flex-direction:column;gap:7px;margin-bottom:24px;}
+.wcard{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:10px;padding:11px 13px;cursor:pointer;
+  transition:all 0.2s;position:relative;overflow:hidden;
+}
+.wcard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);opacity:0;transition:opacity 0.2s;}
+.wcard:hover,.wcard.active{border-color:rgba(0,229,255,0.4);background:rgba(0,229,255,0.04);}
+.wcard:hover::before,.wcard.active::before{opacity:1;}
+.wcard-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.wcard-ticker{font-family:'Space Mono';font-size:14px;font-weight:700;color:var(--accent);}
+.wcard-badges{display:flex;gap:5px;align-items:center;}
+.score-circle{
+  width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Mono';font-size:11px;font-weight:700;flex-shrink:0;
+}
+.sc-a{background:rgba(127,255,110,0.15);color:var(--long);border:2px solid var(--long);}
+.sc-b{background:rgba(127,255,110,0.08);color:#b8ff9f;border:2px solid #b8ff9f;}
+.sc-c{background:rgba(245,200,66,0.12);color:var(--neutral);border:2px solid var(--neutral);}
+.sc-d{background:rgba(255,59,107,0.08);color:#ff8fa8;border:2px solid #ff8fa8;}
+.sc-f{background:rgba(255,59,107,0.15);color:var(--short);border:2px solid var(--short);}
+.sig-pill{padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:1px;}
+.sig-long{background:rgba(127,255,110,0.12);color:var(--long);}
+.sig-short{background:rgba(255,59,107,0.12);color:var(--short);}
+.sig-neutral{background:rgba(245,200,66,0.12);color:var(--neutral);}
+.wcard-name{font-size:10px;color:var(--text-dim);margin-bottom:6px;}
+.wcard-bottom{display:flex;justify-content:space-between;font-size:10px;}
+.wcard-date{font-family:'Space Mono';color:var(--gold);}
+.wcard-price{font-family:'Space Mono';color:var(--text);}
+.wcard-remove{position:absolute;top:7px;right:8px;background:none;border:none;color:var(--text-dim);font-size:13px;cursor:pointer;opacity:0;transition:opacity 0.2s;}
+.wcard:hover .wcard-remove{opacity:1;}
+.wcard-remove:hover{color:var(--short);}
+
+/* Quick add chips */
+.chips{display:flex;flex-wrap:wrap;gap:5px;}
+.chip{
+  font-family:'Space Mono';font-size:9px;
+  padding:3px 9px;border:1px solid var(--border);
+  border-radius:20px;color:var(--text-dim);cursor:pointer;transition:all 0.15s;
+}
+.chip:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,229,255,0.05);}
+
+/* ── MAIN ── */
+.main-area{display:flex;flex-direction:column;overflow:hidden;}
+
+/* Tab strip */
+.tab-strip{display:flex;border-bottom:1px solid var(--border);padding:0 28px;background:rgba(12,20,36,0.3);}
+.tab-item{
+  padding:14px 18px;font-size:12px;font-weight:700;letter-spacing:1px;
+  color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;
+}
+.tab-item:hover{color:var(--text);}
+.tab-item.active{color:var(--accent);border-bottom-color:var(--accent);}
+
+.tab-pane{display:none;flex:1;overflow-y:auto;padding:24px 28px;}
+.tab-pane.active{display:block;}
+
+/* ── WATCHLIST TAB (cards grid) ── */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;}
+.big-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;padding:20px;cursor:pointer;
+  transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+  position:relative;overflow:hidden;
+}
+.big-card::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 0%,rgba(0,229,255,0.05),transparent 60%);
+  opacity:0;transition:opacity 0.3s;pointer-events:none;
+}
+.big-card:hover{border-color:rgba(0,229,255,0.4);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,0.4);}
+.big-card:hover::after{opacity:1;}
+.bc-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.bc-ticker{font-family:'Space Mono';font-size:22px;font-weight:700;}
+.bc-conf{
+  font-family:'Space Mono';font-size:10px;
+  background:var(--surface2);padding:3px 8px;border-radius:5px;
+  color:var(--accent);border:1px solid rgba(0,229,255,0.3);
+}
+.bc-name{font-size:11px;color:var(--text-dim);margin-bottom:12px;}
+.bc-price{font-size:20px;font-weight:700;margin-bottom:3px;}
+.bc-change{font-family:'Space Mono';font-size:11px;}
+.bc-signal{
+  margin-top:14px;padding:11px;border-radius:8px;
+  background:rgba(255,255,255,0.02);border-left:3px solid transparent;
+}
+.bc-sig-label{font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--text-dim);margin-bottom:3px;font-family:'Space Mono';}
+.bc-sig-val{font-weight:800;font-size:15px;margin-bottom:4px;}
+.bc-sig-reason{font-size:10px;color:var(--text-dim);line-height:1.5;}
+.bc-footer{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);}
+.bc-earnings{font-family:'Space Mono';font-size:9px;color:var(--gold);}
+.bc-score-row{display:flex;align-items:center;gap:6px;}
+
+/* Confidence bar */
+.conf-bar-wrap{margin-top:10px;}
+.conf-bar-bg{height:3px;background:var(--surface2);border-radius:2px;overflow:hidden;}
+.conf-bar-fill{height:100%;border-radius:2px;transition:width 0.8s ease;}
+
+/* ── CALENDAR ── */
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.cal-nav-group{display:flex;align-items:center;gap:14px;}
+.cal-nav-btn{
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--text);width:30px;height:30px;border-radius:6px;
+  cursor:pointer;font-size:16px;transition:all 0.2s;
+}
+.cal-nav-btn:hover{border-color:var(--accent);color:var(--accent);}
+.cal-month-label{font-size:20px;font-weight:800;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.cal-dl{font-family:'Space Mono';font-size:9px;color:var(--text-dim);text-align:center;padding:7px 0;letter-spacing:2px;}
+.cal-day{min-height:76px;background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:7px;transition:all 0.2s;}
+.cal-day.empty{background:transparent;border-color:transparent;}
+.cal-day.today{border-color:var(--accent);background:rgba(0,229,255,0.04);}
+.cal-dn{font-family:'Space Mono';font-size:10px;color:var(--text-dim);margin-bottom:5px;}
+.cal-day.today .cal-dn{color:var(--accent);font-weight:700;}
+.cal-earn{font-size:8px;font-family:'Space Mono';padding:2px 4px;border-radius:3px;margin-bottom:2px;cursor:pointer;font-weight:700;transition:transform 0.1s;}
+.cal-earn:hover{transform:scale(1.08);}
+.cal-earn.long{background:rgba(127,255,110,0.18);color:var(--long);}
+.cal-earn.short{background:rgba(255,59,107,0.18);color:var(--short);}
+.cal-earn.neutral{background:rgba(245,200,66,0.18);color:var(--neutral);}
+
+/* ── UPCOMING ── */
+.upcoming-list{display:flex;flex-direction:column;gap:9px;}
+.up-item{
+  display:flex;align-items:center;gap:14px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:13px 16px;cursor:pointer;transition:all 0.2s;
+}
+.up-item:hover{border-color:rgba(0,229,255,0.4);background:rgba(0,229,255,0.03);}
+.up-date-box{background:var(--surface2);border-radius:7px;padding:7px 11px;text-align:center;min-width:52px;}
+.up-month{font-size:8px;color:var(--text-dim);font-family:'Space Mono';text-transform:uppercase;}
+.up-day{font-size:20px;font-weight:800;line-height:1;color:var(--accent);}
+.up-info{flex:1;}
+.up-ticker{font-size:15px;font-weight:700;font-family:'Space Mono';}
+.up-company{font-size:10px;color:var(--text-dim);margin-top:1px;}
+.up-time{font-size:9px;color:var(--text-dim);font-family:'Space Mono';margin-top:3px;}
+.up-right{text-align:right;}
+.up-eps{font-family:'Space Mono';font-size:13px;font-weight:700;}
+.up-eps-label{font-size:8px;color:var(--text-dim);}
+
+/* ── ANALYSIS ── */
+.analysis-wrap{max-width:900px;}
+.analysis-hero{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;}
+.a-ticker-big{font-family:'Space Mono';font-size:32px;font-weight:700;color:var(--accent);}
+.a-name{font-size:13px;color:var(--text-dim);margin-top:2px;}
+.a-date{font-family:'Space Mono';font-size:10px;color:var(--gold);margin-top:6px;}
+.a-price-big{font-family:'Space Mono';font-size:26px;font-weight:700;text-align:right;}
+.a-price-label{font-size:10px;color:var(--text-dim);}
+
+/* Score card in analysis */
+.score-full-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:20px;margin-bottom:18px;
+}
+.score-row-main{display:flex;gap:20px;align-items:center;}
+.score-num{font-family:'Space Mono';font-size:60px;font-weight:700;line-height:1;}
+.score-grade-big{
+  width:52px;height:52px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Mono';font-size:20px;font-weight:700;margin-top:8px;
+}
+.score-breakdown-grid{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;}
+.sb-item{}
+.sb-label{font-size:10px;color:var(--text-dim);font-family:'Space Mono';margin-bottom:2px;}
+.sb-val{font-size:11px;font-family:'Space Mono';font-weight:700;margin-bottom:4px;}
+.sb-bar{height:3px;background:var(--surface2);border-radius:2px;overflow:hidden;margin-bottom:2px;}
+.sb-fill{height:100%;border-radius:2px;}
+
+/* Signal card */
+.signal-full{
+  border-radius:12px;padding:22px;text-align:center;
+  position:relative;overflow:hidden;margin-bottom:18px;
+  background:var(--surface);
+}
+.signal-full.long-s{border:1px solid rgba(127,255,110,0.4);}
+.signal-full.short-s{border:1px solid rgba(255,59,107,0.4);}
+.signal-full.neutral-s{border:1px solid rgba(245,200,66,0.4);}
+.sf-glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:180px;height:2px;}
+.long-s .sf-glow{background:linear-gradient(90deg,transparent,var(--long),transparent);box-shadow:0 0 16px var(--long);}
+.short-s .sf-glow{background:linear-gradient(90deg,transparent,var(--short),transparent);box-shadow:0 0 16px var(--short);}
+.neutral-s .sf-glow{background:linear-gradient(90deg,transparent,var(--neutral),transparent);box-shadow:0 0 16px var(--neutral);}
+.sf-sub{font-size:9px;letter-spacing:3px;color:var(--text-dim);font-family:'Space Mono';}
+.sf-main{font-size:52px;font-weight:800;letter-spacing:-2px;margin:6px 0;}
+.sf-reason{font-size:12px;color:var(--text-dim);max-width:420px;margin:0 auto;line-height:1.5;}
+
+/* Analysis grid */
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
+.ag-full{grid-column:1/-1;}
+.atile{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;}
+.atile-label{font-size:10px;font-weight:700;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;font-family:'Space Mono';}
+.atile-big{font-family:'Space Mono';font-size:30px;font-weight:700;margin-bottom:3px;}
+.atile-sub{font-size:11px;color:var(--text-dim);font-family:'Space Mono';}
+.est-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.est-lbl{font-size:10px;color:var(--text-dim);width:50px;flex-shrink:0;}
+.est-bar-bg{flex:1;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden;}
+.est-fill{height:100%;border-radius:3px;}
+.est-v{font-family:'Space Mono';font-size:10px;color:var(--text);width:40px;text-align:right;}
+.m-table{width:100%;border-collapse:collapse;}
+.m-table tr{border-bottom:1px solid var(--border);}
+.m-table tr:last-child{border-bottom:none;}
+.m-table td{padding:8px 0;font-size:11px;}
+.m-table td:first-child{color:var(--text-dim);font-family:'Space Mono';}
+.m-table td:last-child{text-align:right;font-family:'Space Mono';font-weight:700;}
+/* History bars */
+.hbars{display:flex;align-items:flex-end;gap:5px;height:64px;padding-bottom:18px;}
+.hbar{flex:1;border-radius:3px 3px 0 0;position:relative;cursor:pointer;transition:opacity 0.2s;min-width:0;}
+.hbar:hover{opacity:0.8;}
+.hbar.beat{background:var(--long);}
+.hbar.miss{background:var(--short);}
+.hbar-label{position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);font-size:7px;color:var(--text-dim);white-space:nowrap;font-family:'Space Mono';}
+
+/* Empty state */
+.empty-st{display:flex;flex-direction:column;align-items:center;justify-content:center;height:280px;color:var(--text-dim);text-align:center;}
+.empty-icon{font-size:44px;margin-bottom:14px;opacity:0.35;}
+
+/* Toast */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--surface2);border:1px solid var(--accent);color:var(--text);padding:11px 18px;border-radius:8px;font-size:12px;font-family:'Space Mono';z-index:1000;transform:translateY(70px);opacity:0;transition:all 0.3s;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* Alert modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(5,8,15,0.85);backdrop-filter:blur(8px);z-index:500;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:26px;width:460px;max-width:95vw;max-height:80vh;overflow-y:auto;}
+.modal-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.modal-title{font-size:15px;font-weight:700;}
+.modal-close{background:none;border:none;color:var(--text-dim);font-size:22px;cursor:pointer;line-height:1;}
+.modal-close:hover{color:var(--text);}
+.modal-desc{font-size:11px;color:var(--text-dim);margin-bottom:16px;padding:10px;background:rgba(245,200,66,0.06);border-radius:8px;border-left:3px solid var(--gold);line-height:1.5;}
+.alert-row{display:flex;align-items:center;justify-content:space-between;padding:11px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;margin-bottom:7px;}
+.ar-ticker{font-family:'Space Mono';font-size:12px;font-weight:700;color:var(--accent);}
+.ar-date{font-size:9px;color:var(--text-dim);font-family:'Space Mono';margin-top:2px;}
+/* Toggle */
+.toggle{position:relative;width:38px;height:20px;cursor:pointer;}
+.toggle input{opacity:0;width:0;height:0;position:absolute;}
+.toggle-slider{position:absolute;inset:0;background:var(--border);border-radius:20px;transition:0.3s;}
+.toggle-slider:before{content:'';position:absolute;width:14px;height:14px;left:3px;top:3px;background:var(--text-dim);border-radius:50%;transition:0.3s;}
+.toggle input:checked+.toggle-slider{background:var(--gold);}
+.toggle input:checked+.toggle-slider:before{transform:translateX(18px);background:var(--bg);}
+
+/* Notification banner */
+.notif{display:none;position:fixed;top:76px;right:22px;background:var(--surface);border:1px solid var(--gold);border-radius:12px;padding:14px 18px;z-index:600;max-width:300px;box-shadow:0 8px 30px rgba(0,0,0,0.5);animation:slideIn 0.3s ease;}
+@keyframes slideIn{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
+.notif.show{display:block;}
+.notif-t{font-size:12px;font-weight:700;color:var(--gold);margin-bottom:4px;}
+.notif-b{font-size:11px;color:var(--text-dim);line-height:1.4;}
+
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+
+@media(max-width:860px){
+  .app{grid-template-columns:1fr;}
+  .sidebar{border-right:none;border-bottom:1px solid var(--border);max-height:280px;}
+  .ag{grid-template-columns:1fr;}
+  .score-breakdown-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-hex">⬡</div>
+    Earnings<em>Edge</em>
+    <span class="logo-ver">PRO v2</span>
+  </div>
+  <nav>
+    <button class="nav-btn active" onclick="switchTab('watchlist')">WATCHLIST</button>
+    <button class="nav-btn" onclick="switchTab('calendar')">CALENDARIO</button>
+    <button class="nav-btn" onclick="switchTab('upcoming')">PRÓXIMOS</button>
+    <button class="nav-btn" onclick="switchTab('analysis')">ANÁLISIS</button>
+  </nav>
+  <div class="header-actions">
+    <button class="alert-btn" id="alertBtn" onclick="openAlerts()">🔔 Alertas</button>
+    <div class="live-pill"><div class="live-dot"></div>LIVE</div>
+  </div>
+</header>
+
+<!-- Alert modal -->
+<div class="modal-overlay" id="alertModal">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <div class="modal-title">🔔 Alertas 24h — Earnings</div>
+      <button class="modal-close" onclick="closeAlerts()">×</button>
+    </div>
+    <div class="modal-desc">Recibirás una notificación del navegador 24 horas antes de que cada empresa presente resultados. Mantén la pestaña abierta para recibirlas.</div>
+    <div id="alertList"></div>
+  </div>
+</div>
+
+<!-- Notification banner -->
+<div class="notif" id="notifBanner">
+  <div class="notif-t" id="notifTitle"></div>
+  <div class="notif-b" id="notifBody"></div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sec-label">📋 Mi Watchlist</div>
+    <div class="search-row">
+      <input class="ticker-input" id="tickerInput" type="text" placeholder="Añadir ticker..." maxlength="6">
+      <button class="add-btn" onclick="addStock()">+</button>
+    </div>
+    <div class="watch-list" id="watchList"></div>
+    <div class="sec-label">⚡ Acceso Rápido</div>
+    <div class="chips">
+      <span class="chip" onclick="quickAdd('AAPL')">AAPL</span>
+      <span class="chip" onclick="quickAdd('MSFT')">MSFT</span>
+      <span class="chip" onclick="quickAdd('NVDA')">NVDA</span>
+      <span class="chip" onclick="quickAdd('TSLA')">TSLA</span>
+      <span class="chip" onclick="quickAdd('AMZN')">AMZN</span>
+      <span class="chip" onclick="quickAdd('META')">META</span>
+      <span class="chip" onclick="quickAdd('GOOGL')">GOOGL</span>
+      <span class="chip" onclick="quickAdd('ORCL')">ORCL</span>
+      <span class="chip" onclick="quickAdd('NFLX')">NFLX</span>
+      <span class="chip" onclick="quickAdd('AMD')">AMD</span>
+      <span class="chip" onclick="quickAdd('CRM')">CRM</span>
+      <span class="chip" onclick="quickAdd('INTC')">INTC</span>
+      <span class="chip" onclick="quickAdd('ADBE')">ADBE</span>
+      <span class="chip" onclick="quickAdd('MU')">MU</span>
+      <span class="chip" onclick="quickAdd('BABA')">BABA</span>
+      <span class="chip" onclick="quickAdd('SOFI')">SOFI</span>
+      <span class="chip" onclick="quickAdd('ASTS')">ASTS</span>
+      <span class="chip" onclick="quickAdd('OKLO')">OKLO</span>
+      <span class="chip" onclick="quickAdd('IREN')">IREN</span>
+      <span class="chip" onclick="quickAdd('SMR')">SMR</span>
+      <span class="chip" onclick="quickAdd('NBIS')">NBIS</span>
+      <span class="chip" onclick="quickAdd('QBTS')">QBTS</span>
+      <span class="chip" onclick="quickAdd('SITM')">SITM</span>
+      <span class="chip" onclick="quickAdd('BE')">BE</span>
+      <span class="chip" onclick="quickAdd('3CP')">3CP·Xiaomi</span>
+      <span class="chip" onclick="quickAdd('DN3')">DN3·Metaplanet</span>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-area">
+    <div class="tab-strip">
+      <div class="tab-item active" id="ti-watchlist" onclick="switchTab('watchlist')">📊 WATCHLIST</div>
+      <div class="tab-item" id="ti-calendar" onclick="switchTab('calendar')">📅 CALENDARIO</div>
+      <div class="tab-item" id="ti-upcoming" onclick="switchTab('upcoming')">⏰ PRÓXIMOS</div>
+      <div class="tab-item" id="ti-analysis" onclick="switchTab('analysis')">🔬 ANÁLISIS</div>
+    </div>
+
+    <!-- WATCHLIST TAB -->
+    <div class="tab-pane active" id="tp-watchlist">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <div>
+          <div style="font-size:26px;font-weight:800;">MIS ACTIVOS <span id="wl-count" style="color:var(--accent)"></span></div>
+          <div style="font-size:12px;color:var(--text-dim);margin-top:2px;">Haz clic en una tarjeta para ver el análisis completo</div>
+        </div>
+        <div id="wl-top-score" style="font-family:'Space Mono';font-size:11px;color:var(--text-dim);text-align:right;"></div>
+      </div>
+      <div class="cards-grid" id="cardsGrid"></div>
+    </div>
+
+    <!-- CALENDAR TAB -->
+    <div class="tab-pane" id="tp-calendar">
+      <div class="cal-header">
+        <div class="cal-nav-group">
+          <button class="cal-nav-btn" onclick="changeMonth(-1)">‹</button>
+          <div class="cal-month-label" id="calLabel"></div>
+          <button class="cal-nav-btn" onclick="changeMonth(1)">›</button>
+        </div>
+        <div style="font-family:'Space Mono';font-size:10px;color:var(--text-dim)">
+          <span style="color:var(--long)">■</span> LONG &nbsp;
+          <span style="color:var(--short)">■</span> SHORT &nbsp;
+          <span style="color:var(--neutral)">■</span> NEUTRAL
+        </div>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+
+    <!-- UPCOMING TAB -->
+    <div class="tab-pane" id="tp-upcoming">
+      <div style="margin-bottom:18px;font-size:12px;color:var(--text-dim);">Próximas presentaciones ordenadas por fecha · Haz clic para ver el análisis</div>
+      <div class="upcoming-list" id="upcomingList"></div>
+    </div>
+
+    <!-- ANALYSIS TAB -->
+    <div class="tab-pane" id="tp-analysis">
+      <div id="analysisPanel">
+        <div class="empty-st">
+          <div class="empty-icon">🔬</div>
+          <div>Selecciona una empresa para ver<br>el análisis completo de IA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// STOCK DATA
+// ─────────────────────────────────────────────
+const SD = {
+  AAPL:{name:"Apple Inc.",price:213.5,earningsDate:new Date(2026,3,30),time:"After Close",epsEst:1.62,revEst:94.2,revUnit:"B",buyPct:72,holdPct:21,sellPct:7,priceTarget:235,upside:10.1,signal:"long",signalReason:"Fuerte crecimiento en servicios (+15% YoY) y expansión márgenes. Consenso alcista sólido. EPS beat en 7 de los últimos 8 trimestres.",history:[{q:"Q1 24",beat:true,pct:3.2},{q:"Q2 24",beat:true,pct:1.8},{q:"Q3 24",beat:false,pct:-2.1},{q:"Q4 24",beat:true,pct:4.5},{q:"Q1 25",beat:true,pct:2.9},{q:"Q2 25",beat:true,pct:3.7}],metrics:[["P/E Ratio","28.4x"],["EV/EBITDA","21.1x"],["Margen Neto","25.3%"],["Deuda/Capital","1.8x"],["FCF Yield","3.9%"]]},
+  MSFT:{name:"Microsoft Corp.",price:415.2,earningsDate:new Date(2026,3,23),time:"After Close",epsEst:3.22,revEst:70.1,revUnit:"B",buyPct:88,holdPct:10,sellPct:2,priceTarget:510,upside:22.8,signal:"long",signalReason:"Azure cloud acelerando +30% QoQ. Copilot AI integración masiva aumenta ARPU. Margen operativo récord esperado. Señal LONG clara.",history:[{q:"Q1 24",beat:true,pct:5.1},{q:"Q2 24",beat:true,pct:3.8},{q:"Q3 24",beat:true,pct:6.2},{q:"Q4 24",beat:true,pct:4.4},{q:"Q1 25",beat:true,pct:3.9},{q:"Q2 25",beat:false,pct:-1.2}],metrics:[["P/E Ratio","34.8x"],["EV/EBITDA","24.5x"],["Margen Neto","35.6%"],["Deuda/Capital","0.4x"],["FCF Yield","2.8%"]]},
+  NVDA:{name:"NVIDIA Corp.",price:875.3,earningsDate:new Date(2026,4,21),time:"After Close",epsEst:0.89,revEst:43.3,revUnit:"B",buyPct:91,holdPct:7,sellPct:2,priceTarget:1100,upside:25.7,signal:"long",signalReason:"Demanda de data center GPU sin precedentes. Blackwell ramp acelerado. Backlog multi-trimestral. LONG fuerte con alta convicción.",history:[{q:"Q1 24",beat:true,pct:12.4},{q:"Q2 24",beat:true,pct:18.7},{q:"Q3 24",beat:true,pct:15.2},{q:"Q4 24",beat:true,pct:11.8},{q:"Q1 25",beat:true,pct:9.3},{q:"Q2 25",beat:true,pct:14.1}],metrics:[["P/E Ratio","42.3x"],["EV/EBITDA","32.8x"],["Margen Neto","55.1%"],["Deuda/Capital","0.2x"],["FCF Yield","1.8%"]]},
+  TSLA:{name:"Tesla Inc.",price:248.7,earningsDate:new Date(2026,3,16),time:"After Close",epsEst:0.43,revEst:24.1,revUnit:"B",buyPct:38,holdPct:35,sellPct:27,priceTarget:245,upside:-1.5,signal:"short",signalReason:"Márgenes auto bajo presión. Competencia China erosiona cuota. Guidance bajado 2x. Consenso dividido con sesgo bajista.",history:[{q:"Q1 24",beat:false,pct:-8.2},{q:"Q2 24",beat:true,pct:2.1},{q:"Q3 24",beat:false,pct:-4.8},{q:"Q4 24",beat:false,pct:-3.2},{q:"Q1 25",beat:true,pct:1.5},{q:"Q2 25",beat:false,pct:-5.7}],metrics:[["P/E Ratio","68.2x"],["EV/EBITDA","38.1x"],["Margen Neto","5.8%"],["Deuda/Capital","0.1x"],["FCF Yield","1.2%"]]},
+  AMZN:{name:"Amazon.com Inc.",price:198.4,earningsDate:new Date(2026,4,1),time:"After Close",epsEst:1.36,revEst:159.3,revUnit:"B",buyPct:94,holdPct:5,sellPct:1,priceTarget:240,upside:21.0,signal:"long",signalReason:"AWS acelerando con IA. Margen retail mejorando. Advertising +20% YoY. Prime suscripciones crecen.",history:[{q:"Q1 24",beat:true,pct:4.2},{q:"Q2 24",beat:true,pct:6.8},{q:"Q3 24",beat:true,pct:5.3},{q:"Q4 24",beat:true,pct:7.1},{q:"Q1 25",beat:true,pct:4.9},{q:"Q2 25",beat:true,pct:3.8}],metrics:[["P/E Ratio","38.5x"],["EV/EBITDA","16.2x"],["Margen Neto","8.7%"],["Deuda/Capital","0.6x"],["FCF Yield","3.1%"]]},
+  META:{name:"Meta Platforms Inc.",price:562.1,earningsDate:new Date(2026,3,23),time:"After Close",epsEst:5.24,revEst:41.7,revUnit:"B",buyPct:82,holdPct:14,sellPct:4,priceTarget:680,upside:21.0,signal:"long",signalReason:"Advertising revenue récord. AI ad targeting +30% eficiencia. Reality Labs pérdidas reduciendo. Reels monetización acelerada.",history:[{q:"Q1 24",beat:true,pct:8.3},{q:"Q2 24",beat:true,pct:6.1},{q:"Q3 24",beat:true,pct:5.7},{q:"Q4 24",beat:true,pct:9.2},{q:"Q1 25",beat:true,pct:7.4},{q:"Q2 25",beat:true,pct:5.1}],metrics:[["P/E Ratio","26.4x"],["EV/EBITDA","16.8x"],["Margen Neto","33.9%"],["Deuda/Capital","0.0x"],["FCF Yield","4.2%"]]},
+  GOOGL:{name:"Alphabet Inc.",price:176.3,earningsDate:new Date(2026,3,22),time:"After Close",epsEst:2.01,revEst:89.8,revUnit:"B",buyPct:84,holdPct:13,sellPct:3,priceTarget:215,upside:22.0,signal:"long",signalReason:"Search dominance intacta. Cloud GCP +35%. YouTube ads fuerte. Gemini AI integración positiva.",history:[{q:"Q1 24",beat:true,pct:3.8},{q:"Q2 24",beat:true,pct:5.2},{q:"Q3 24",beat:true,pct:4.6},{q:"Q4 24",beat:true,pct:6.1},{q:"Q1 25",beat:false,pct:-1.8},{q:"Q2 25",beat:true,pct:4.3}],metrics:[["P/E Ratio","22.1x"],["EV/EBITDA","14.3x"],["Margen Neto","28.4%"],["Deuda/Capital","0.0x"],["FCF Yield","4.8%"]]},
+  ORCL:{name:"Oracle Corp.",price:178.5,earningsDate:new Date(2026,2,11),time:"After Close",epsEst:1.47,revEst:14.4,revUnit:"B",buyPct:68,holdPct:24,sellPct:8,priceTarget:200,upside:12.1,signal:"neutral",signalReason:"RPO backlog histórico de $130B positivo, pero ingresos Q3 decepcionaron vs estimaciones. Esperar confirmación antes de entrar.",history:[{q:"Q1 24",beat:true,pct:2.1},{q:"Q2 24",beat:false,pct:-1.4},{q:"Q3 24",beat:true,pct:3.2},{q:"Q4 24",beat:true,pct:4.8},{q:"Q1 25",beat:false,pct:-2.2},{q:"Q2 25",beat:false,pct:-1.8}],metrics:[["P/E Ratio","31.2x"],["EV/EBITDA","18.4x"],["Margen Neto","22.1%"],["Deuda/Capital","12.4x"],["FCF Yield","3.6%"]]},
+  NFLX:{name:"Netflix Inc.",price:742.5,earningsDate:new Date(2026,3,15),time:"After Close",epsEst:5.73,revEst:10.5,revUnit:"B",buyPct:66,holdPct:26,sellPct:8,priceTarget:800,upside:7.7,signal:"long",signalReason:"Password sharing crackdown aumentó suscripciones. Ad-supported tier creciendo. Contenido original sólido. Margen en expansión.",history:[{q:"Q1 24",beat:true,pct:5.4},{q:"Q2 24",beat:true,pct:4.1},{q:"Q3 24",beat:true,pct:7.8},{q:"Q4 24",beat:true,pct:3.2},{q:"Q1 25",beat:false,pct:-2.4},{q:"Q2 25",beat:true,pct:4.6}],metrics:[["P/E Ratio","44.2x"],["EV/EBITDA","28.7x"],["Margen Neto","18.2%"],["Deuda/Capital","0.9x"],["FCF Yield","2.1%"]]},
+  AMD:{name:"Advanced Micro Devices",price:132.8,earningsDate:new Date(2026,3,29),time:"After Close",epsEst:0.94,revEst:7.1,revUnit:"B",buyPct:74,holdPct:19,sellPct:7,priceTarget:180,upside:35.5,signal:"long",signalReason:"MI300 GPU ganando cuota vs NVIDIA. Data center crecimiento acelerado. Valoración atractiva vs sector.",history:[{q:"Q1 24",beat:true,pct:4.2},{q:"Q2 24",beat:false,pct:-3.1},{q:"Q3 24",beat:true,pct:5.8},{q:"Q4 24",beat:true,pct:2.4},{q:"Q1 25",beat:true,pct:6.1},{q:"Q2 25",beat:false,pct:-1.9}],metrics:[["P/E Ratio","38.7x"],["EV/EBITDA","22.4x"],["Margen Neto","4.8%"],["Deuda/Capital","0.1x"],["FCF Yield","1.4%"]]},
+  CRM:{name:"Salesforce Inc.",price:298.4,earningsDate:new Date(2026,4,28),time:"After Close",epsEst:2.46,revEst:9.8,revUnit:"B",buyPct:70,holdPct:23,sellPct:7,priceTarget:340,upside:13.9,signal:"long",signalReason:"Agentforce AI platform traccionando. Crecimiento suscripciones estable. Operaciones eficientes mejoran márgenes.",history:[{q:"Q1 24",beat:true,pct:3.8},{q:"Q2 24",beat:true,pct:2.9},{q:"Q3 24",beat:true,pct:4.1},{q:"Q4 24",beat:false,pct:-1.2},{q:"Q1 25",beat:true,pct:2.7},{q:"Q2 25",beat:true,pct:3.4}],metrics:[["P/E Ratio","29.8x"],["EV/EBITDA","18.6x"],["Margen Neto","15.4%"],["Deuda/Capital","0.3x"],["FCF Yield","3.8%"]]},
+  INTC:{name:"Intel Corp.",price:22.1,earningsDate:new Date(2026,3,24),time:"After Close",epsEst:-0.03,revEst:12.3,revUnit:"B",buyPct:22,holdPct:43,sellPct:35,priceTarget:19,upside:-14.0,signal:"short",signalReason:"Pérdida de cuota de mercado acelerada. Retrasos en proceso de fabricación. CEO nuevo sin plan claro. Señal SHORT con alta convicción.",history:[{q:"Q1 24",beat:false,pct:-9.2},{q:"Q2 24",beat:false,pct:-12.4},{q:"Q3 24",beat:false,pct:-7.8},{q:"Q4 24",beat:true,pct:2.1},{q:"Q1 25",beat:false,pct:-8.4},{q:"Q2 25",beat:false,pct:-6.2}],metrics:[["P/E Ratio","N/M"],["EV/EBITDA","N/M"],["Margen Neto","-4.2%"],["Deuda/Capital","0.8x"],["FCF Yield","-2.1%"]]},
+  ADBE:{name:"Adobe Inc.",price:283.5,earningsDate:new Date(2026,2,12),time:"After Close",epsEst:5.87,revEst:6.28,revUnit:"B",buyPct:46,holdPct:46,sellPct:8,priceTarget:399,upside:40.7,signal:"neutral",signalReason:"Consenso dividido 50/50. AI democratiza el diseño amenazando su moat. Pero Firefly y suscripciones premium crecen. Esperar señal clara post-resultados.",history:[{q:"Q1 25",beat:true,pct:2.1},{q:"Q2 25",beat:true,pct:1.8},{q:"Q3 25",beat:true,pct:1.6},{q:"Q4 25",beat:true,pct:2.0},{q:"Q1 26e",beat:true,pct:1.1},{q:"Q4 24",beat:true,pct:1.9}],metrics:[["P/E Ratio","26.8x"],["EV/EBITDA","18.4x"],["Margen Neto","27.1%"],["Deuda/Capital","0.6x"],["FCF Yield","4.2%"]]},
+  MU:{name:"Micron Technology Inc.",price:98.5,earningsDate:new Date(2026,5,18),time:"After Close",epsEst:8.59,revEst:19.1,revUnit:"B",buyPct:88,holdPct:10,sellPct:2,priceTarget:145,upside:47.2,signal:"long",signalReason:"Q1 FY26 revenue récord $13.64B. HBM4 producción rampando ahead of schedule. Demanda AI supera oferta. Señal LONG fuerte.",history:[{q:"Q1 FY25",beat:true,pct:7.3},{q:"Q2 FY25",beat:true,pct:4.2},{q:"Q3 FY25",beat:true,pct:5.8},{q:"Q4 FY25",beat:true,pct:8.1},{q:"Q1 FY26",beat:true,pct:15.9},{q:"Q2 FY26e",beat:true,pct:4.0}],metrics:[["P/E Ratio","9.3x"],["EV/EBITDA","6.8x"],["Margen Neto","38.4%"],["HBM Share","Leader"],["FCF Yield","7.2%"]]},
+  BABA:{name:"Alibaba Group Holding",price:133.5,earningsDate:new Date(2026,4,15),time:"Before Open",epsEst:14.8,revEst:249.4,revUnit:"B CNY",buyPct:90,holdPct:10,sellPct:0,priceTarget:202,upside:51.3,signal:"long",signalReason:"Cloud e IA creciendo acelerado. Qwen AI model competitivo vs GPT. Valoración extremadamente atractiva (P/E ~10x). 100% analistas Buy.",history:[{q:"Q1 25",beat:true,pct:4.2},{q:"Q2 25",beat:false,pct:-24.6},{q:"Q3 25",beat:true,pct:3.8},{q:"Q4 25",beat:true,pct:5.1},{q:"Q1 26e",beat:true,pct:2.5},{q:"Q2 26e",beat:true,pct:4.0}],metrics:[["P/E Ratio","~10x"],["EV/EBITDA","7.2x"],["Margen Neto","14.8%"],["Cloud Growth","+13% YoY"],["FCF Yield","8.1%"]]},
+  SOFI:{name:"SoFi Technologies Inc.",price:13.8,earningsDate:new Date(2026,4,4),time:"After Close",epsEst:0.12,revEst:1.05,revUnit:"B",buyPct:62,holdPct:28,sellPct:10,priceTarget:19,upside:37.7,signal:"long",signalReason:"Primer trimestre $1B+ revenue. Miembros +35% YoY (13.7M). Guidance 2026: $4.65B revenue (+30%). CAGR EPS 38-42% hasta 2028.",history:[{q:"Q1 25",beat:true,pct:8.3},{q:"Q2 25",beat:true,pct:28.6},{q:"Q3 25",beat:true,pct:15.4},{q:"Q4 25",beat:true,pct:8.3},{q:"Q1 26e",beat:true,pct:4.0},{q:"Q2 26e",beat:true,pct:6.0}],metrics:[["P/E Ratio","23.0x"],["Revenue 2025","$3.6B (+38%)"],["Adj. EBITDA","$1.1B (+58%)"],["Miembros","13.7M (+35%)"],["Guidance EPS 26","$0.60"]]},
+  ASTS:{name:"AST SpaceMobile Inc.",price:22.4,earningsDate:new Date(2026,4,18),time:"After Close",epsEst:-0.21,revEst:43.5,revUnit:"M",buyPct:76,holdPct:18,sellPct:6,priceTarget:38,upside:69.6,signal:"long",signalReason:"Revenue 2025 +641% YoY ($70.9M). Guidance 2026: $150-200M. 45-60 satélites en órbita para finales 2026. Visión 2027 >$1B.",history:[{q:"Q1 25",beat:true,pct:12.4},{q:"Q2 25",beat:true,pct:28.7},{q:"Q3 25",beat:true,pct:37.7},{q:"Q4 25",beat:true,pct:37.7},{q:"Q1 26e",beat:false,pct:-5.2},{q:"Q2 26e",beat:true,pct:8.1}],metrics:[["P/E Ratio","N/M"],["Rev 2025","$70.9M (+641%)"],["Margen Bruto","68.7%"],["Satélites 2026","45-60"],["Rev 2026e","$150-200M"]]},
+  OKLO:{name:"Oklo Inc.",price:65.7,earningsDate:new Date(2026,4,13),time:"After Close",epsEst:-0.17,revEst:0.0,revUnit:"M",buyPct:72,holdPct:21,sellPct:7,priceTarget:122,upside:85.7,signal:"long",signalReason:"Reactores nucleares compactos para IA/data center. Deal con Meta Platforms. DOE milestone objetivo julio 2026. +305% en 12 meses.",history:[{q:"Q1 25",beat:false,pct:-15.2},{q:"Q2 25",beat:false,pct:-18.4},{q:"Q3 25",beat:false,pct:-22.1},{q:"Q4 25",beat:false,pct:-20.0},{q:"Q1 26e",beat:false,pct:-30.7},{q:"Q2 26e",beat:false,pct:-25.0}],metrics:[["P/E Ratio","N/M"],["Cash & Equiv.","$1.2B"],["Rev. Actual","$0"],["Rev. 2027e","$222M"],["ROE","-10.4%"]]},
+  IREN:{name:"IREN Limited (AI Cloud)",price:8.7,earningsDate:new Date(2026,4,13),time:"After Close",epsEst:-0.18,revEst:95.0,revUnit:"M",buyPct:78,holdPct:16,sellPct:6,priceTarget:18,upside:106.9,signal:"long",signalReason:"Transición BTC mining → AI Cloud. Q2 FY26 Adj.EBITDA $75.3M. Revenue $184.7M. Capacidad GPU expandiéndose rápido.",history:[{q:"Q1 FY26",beat:true,pct:42.1},{q:"Q2 FY26",beat:false,pct:-18.4},{q:"Q3 FY25",beat:true,pct:15.7},{q:"Q4 FY25",beat:true,pct:22.3},{q:"Q1 FY25",beat:true,pct:38.2},{q:"Q2 FY25",beat:true,pct:45.1}],metrics:[["Adj. EBITDA Q2","$75.3M"],["Rev. Q2 FY26","$184.7M"],["Margen Adj.EBITDA","40.7%"],["Transición","BTC → GPU/AI"],["ARR Target","$3.4B"]]},
+  SMR:{name:"NuScale Power Corp.",price:18.4,earningsDate:new Date(2026,4,13),time:"After Close",epsEst:-0.15,revEst:18.2,revUnit:"M",buyPct:55,holdPct:32,sellPct:13,priceTarget:28,upside:52.2,signal:"neutral",signalReason:"Único SMR con certificación NRC en EEUU. Deal TVA/InterOne: 6GW. Primera entrega 2030. Historial de misses severos. Especulativo.",history:[{q:"Q1 25",beat:false,pct:-38.5},{q:"Q2 25",beat:false,pct:-130.8},{q:"Q3 25",beat:false,pct:-80.0},{q:"Q4 25",beat:false,pct:-28.7},{q:"Q1 26e",beat:false,pct:-20.0},{q:"Q2 26e",beat:false,pct:-15.0}],metrics:[["P/E Ratio","N/M"],["Cash","$753.8M"],["Rev. Trimestral","~$18M"],["Primer Plant","2030"],["NRC Cert.","Único SMR EEUU"]]},
+  NBIS:{name:"Nebius Group N.V.",price:34.2,earningsDate:new Date(2026,4,14),time:"Before Open",epsEst:-0.35,revEst:750.0,revUnit:"M",buyPct:85,holdPct:12,sellPct:3,priceTarget:52,upside:52.0,signal:"long",signalReason:"AI Cloud ARR $1.2B al cierre 2025 (+830% YoY). Guidance 2026: $3.0-3.4B revenue. Adj.EBITDA margin ~40%.",history:[{q:"Q3 25",beat:true,pct:22.4},{q:"Q4 25",beat:true,pct:56.3},{q:"Q1 26e",beat:true,pct:18.0},{q:"Q2 26e",beat:true,pct:15.0},{q:"Q3 24",beat:true,pct:35.2},{q:"Q4 24",beat:true,pct:42.8}],metrics:[["ARR Core","$1.2B (+830%)"],["Rev 2026e","$3.0-3.4B"],["Adj. EBITDA","~40% margin"],["CapEx 2026e","$16-20B"],["Cash","$3.0B"]]},
+  QBTS:{name:"D-Wave Quantum Inc.",price:7.8,earningsDate:new Date(2026,4,14),time:"After Close",epsEst:-0.24,revEst:9.5,revUnit:"M",buyPct:58,holdPct:30,sellPct:12,priceTarget:12,upside:53.8,signal:"neutral",signalReason:"Supremacía cuántica demostrada. Bookings 2026 YTD >$32.8M. Pipeline +1500% YoY. Pero revenue pequeño y pérdidas altas. Especulativo.",history:[{q:"Q1 25",beat:false,pct:-18.4},{q:"Q2 25",beat:true,pct:12.8},{q:"Q3 25",beat:true,pct:28.7},{q:"Q4 25",beat:true,pct:179.0},{q:"Q1 26e",beat:true,pct:5.2},{q:"Q2 26e",beat:true,pct:8.0}],metrics:[["P/E Ratio","N/M"],["Revenue 2025","$24.6M (+179%)"],["Gross Margin","82.6%"],["Cash","$884.5M"],["Bookings YTD",">$32.8M"]]},
+  SITM:{name:"SiTime Corporation",price:192.3,earningsDate:new Date(2026,4,6),time:"After Close",epsEst:1.35,revEst:140.0,revUnit:"M",buyPct:64,holdPct:28,sellPct:8,priceTarget:245,upside:27.4,signal:"long",signalReason:"7 trimestres consecutivos +100% YoY en AI/Data Center. Q4 2025 revenue +66% YoY. Año completo 2025 +61%. Señal LONG fuerte.",history:[{q:"Q2 25",beat:true,pct:8.4},{q:"Q3 25",beat:true,pct:12.7},{q:"Q4 25",beat:true,pct:18.2},{q:"Q1 25",beat:true,pct:6.4},{q:"Q4 24",beat:true,pct:9.8},{q:"Q3 24",beat:true,pct:14.2}],metrics:[["P/E Ratio","60.1x"],["Non-GAAP EPS 25","$3.20"],["Margen Bruto","59.3%"],["Revenue 2025","$326.7M (+61%)"],["Cash","$808.4M"]]},
+  BE:{name:"Bloom Energy Corp.",price:24.8,earningsDate:new Date(2026,4,7),time:"After Close",epsEst:0.22,revEst:650.0,revUnit:"M",buyPct:60,holdPct:30,sellPct:10,priceTarget:38,upside:53.2,signal:"long",signalReason:"Backlog producto $6B (+2.5x YoY). Revenue 2025 +37% YoY. Guidance 2026: $3.1-3.3B (>50% growth). Energía limpia para data centers AI.",history:[{q:"Q1 25",beat:true,pct:4.2},{q:"Q2 25",beat:true,pct:5.8},{q:"Q3 25",beat:true,pct:8.4},{q:"Q4 25",beat:true,pct:35.9},{q:"Q1 26e",beat:true,pct:3.5},{q:"Q2 26e",beat:true,pct:5.0}],metrics:[["P/E Ratio","N/M"],["Backlog Producto","$6B (+2.5x)"],["Revenue 2025","$2.0B (+37%)"],["Guidance Rev 26","$3.1-3.3B"],["Adj. EPS 26e","$1.33-1.48"]]},
+  "3CP":{name:"Xiaomi Corp. (Frankfurt)",price:3.48,earningsDate:new Date(2026,2,24),time:"Before Open",epsEst:0.39,revEst:125.5,revUnit:"B CNY",buyPct:82,holdPct:15,sellPct:3,priceTarget:4.80,upside:37.9,signal:"long",signalReason:"SUV eléctrico YU7 supera ventas Tesla Model Y en China. EV + smartphones + IoT = triple motor. 60 analistas Buy. Goldman Sachs target HKD 47.50.",history:[{q:"Q1 24",beat:true,pct:8.4},{q:"Q2 24",beat:true,pct:12.1},{q:"Q3 24",beat:true,pct:9.7},{q:"Q4 24",beat:true,pct:15.3},{q:"Q1 25",beat:true,pct:6.2},{q:"Q2 25",beat:true,pct:30.8}],metrics:[["P/E Ratio","18.3x"],["EV/EBITDA","12.1x"],["Margen Neto","6.8%"],["Deuda/Capital","0.3x"],["FCF Yield","3.1%"]]},
+  DN3:{name:"Metaplanet Inc. (Frankfurt)",price:0.82,earningsDate:new Date(2026,2,17),time:"Before Open",epsEst:0.0,revEst:16.0,revUnit:"B JPY",buyPct:33,holdPct:34,sellPct:33,priceTarget:1.10,upside:34.1,signal:"neutral",signalReason:"'MicroStrategy japonés': 35.102 BTC en balance, objetivo 100k BTC en 2026. Revenue operativo +738% pero pérdida neta por mark-to-market BTC. Muy volátil.",history:[{q:"Q1 24",beat:true,pct:45.2},{q:"Q2 24",beat:true,pct:82.4},{q:"Q3 24",beat:false,pct:-31.2},{q:"Q4 24",beat:true,pct:28.7},{q:"Q1 25",beat:false,pct:-42.1},{q:"Q2 25",beat:true,pct:1694.5}],metrics:[["P/E Ratio","20x"],["BTC Holdings","35.102 BTC"],["Margen Operativo","70.6%"],["Volat. Semanal","18%"],["BTC Target 2026","100.000 BTC"]]}
+};
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let watchlist = JSON.parse(localStorage.getItem("ee2_wl") || '["ORCL","NVDA","TSLA"]');
+let activeTab = "watchlist";
+let activeStock = null;
+let calDate = new Date(2026, 2, 1);
+let alertsEnabled = JSON.parse(localStorage.getItem("ee2_alerts") || "{}");
+
+function saveWL() { localStorage.setItem("ee2_wl", JSON.stringify(watchlist)); }
+function saveAlerts() { localStorage.setItem("ee2_alerts", JSON.stringify(alertsEnabled)); }
+
+// ─────────────────────────────────────────────
+// SCORE ENGINE
+// ─────────────────────────────────────────────
+function calcScore(t) {
+  const d = SD[t]; if (!d) return {score:0,grade:"F",color:"var(--short)",breakdown:{}};
+  const beatCount = d.history.filter(h => h.beat).length;
+  const beatPct = beatCount / d.history.length;
+  const beatScore = Math.round(beatPct * 25);
+  const buyScore = Math.round((d.buyPct / 100) * 25);
+  const upsideClamped = Math.max(-10, Math.min(50, d.upside));
+  const upsideScore = Math.round(((upsideClamped + 10) / 60) * 25);
+  const sigScore = {long:22, neutral:12, short:3}[d.signal] || 0;
+  const total = beatScore + buyScore + upsideScore + sigScore;
+  let grade, color;
+  if (total >= 85) { grade = "A"; color = "var(--long)"; }
+  else if (total >= 70) { grade = "B"; color = "#b8ff9f"; }
+  else if (total >= 55) { grade = "C"; color = "var(--neutral)"; }
+  else if (total >= 40) { grade = "D"; color = "#ff8fa8"; }
+  else { grade = "F"; color = "var(--short)"; }
+  return { score: total, grade, color,
+    breakdown: { beatScore, buyScore, upsideScore, sigScore,
+      beatPct: Math.round(beatPct*100) }};
+}
+
+// Confidence % derived from score
+function confidence(t) { return Math.min(99, Math.round(calcScore(t).score * 1.05)); }
+
+// ─────────────────────────────────────────────
+// UTILS
+// ─────────────────────────────────────────────
+function showToast(msg) {
+  const el = document.getElementById("toast");
+  el.textContent = msg; el.classList.add("show");
+  setTimeout(() => el.classList.remove("show"), 2400);
+}
+
+function addStock() {
+  const inp = document.getElementById("tickerInput");
+  const t = inp.value.toUpperCase().trim();
+  if (!t) return;
+  if (!SD[t]) { showToast("⚠️ " + t + " no disponible"); inp.value = ""; return; }
+  if (watchlist.includes(t)) { showToast(t + " ya está en la watchlist"); inp.value = ""; return; }
+  watchlist.push(t); inp.value = ""; saveWL(); render(); showToast("✅ " + t + " añadido");
+}
+
+function quickAdd(t) {
+  if (watchlist.includes(t)) { showToast(t + " ya está en la watchlist"); return; }
+  watchlist.push(t); saveWL(); render(); showToast("✅ " + t + " añadido");
+}
+
+function removeStock(t) {
+  watchlist = watchlist.filter(x => x !== t);
+  if (activeStock === t) activeStock = null;
+  saveWL(); render();
+}
+
+function selectStock(t) {
+  activeStock = t; switchTab("analysis");
+}
+
+function switchTab(name) {
+  activeTab = name;
+  document.querySelectorAll(".nav-btn").forEach((b, i) => {
+    b.classList.toggle("active", ["watchlist","calendar","upcoming","analysis"][i] === name);
+  });
+  document.querySelectorAll(".tab-item").forEach(ti => {
+    ti.classList.toggle("active", ti.id === "ti-" + name);
+  });
+  document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
+  const pane = document.getElementById("tp-" + name);
+  if (pane) pane.classList.add("active");
+  render();
+}
+
+function changeMonth(dir) {
+  calDate.setMonth(calDate.getMonth() + dir);
+  renderCalendar();
+}
+
+document.getElementById("tickerInput").addEventListener("keydown", e => { if (e.key === "Enter") addStock(); });
+
+// ─────────────────────────────────────────────
+// ALERTS
+// ─────────────────────────────────────────────
+function openAlerts() { document.getElementById("alertModal").classList.add("open"); renderAlertList(); }
+function closeAlerts() { document.getElementById("alertModal").classList.remove("open"); }
+document.getElementById("alertModal").addEventListener("click", e => { if (e.target.id === "alertModal") closeAlerts(); });
+
+function renderAlertList() {
+  const el = document.getElementById("alertList");
+  if (!watchlist.length) { el.innerHTML = '<div style="color:var(--text-dim);font-size:12px;text-align:center;padding:16px">Añade empresas primero</div>'; return; }
+  const sorted = [...watchlist].filter(t => SD[t]).sort((a,b) => SD[a].earningsDate - SD[b].earningsDate);
+  el.innerHTML = sorted.map(t => {
+    const d = SD[t];
+    const dateStr = d.earningsDate.toLocaleDateString("es-ES",{day:"2-digit",month:"short",year:"numeric"});
+    const hrs = Math.round((d.earningsDate - new Date()) / 36e5);
+    const urgent = hrs > 0 && hrs <= 24;
+    return '<div class="alert-row"' + (urgent ? ' style="border-color:rgba(245,200,66,0.5)"' : '') + '>' +
+      '<div><div class="ar-ticker">' + t + (urgent ? ' <span style="color:var(--gold);font-size:8px">⚡HOY</span>' : '') + '</div>' +
+      '<div class="ar-date">📅 ' + dateStr + ' · ' + d.time + '</div></div>' +
+      '<label class="toggle"><input type="checkbox" ' + (alertsEnabled[t] ? "checked" : "") + ' onchange="toggleAlert(\'' + t + '\',this.checked)"><span class="toggle-slider"></span></label>' +
+      '</div>';
+  }).join("");
+  document.getElementById("alertBtn").classList.toggle("active", Object.values(alertsEnabled).some(Boolean));
+}
+
+function toggleAlert(t, on) {
+  alertsEnabled[t] = on; saveAlerts();
+  if (on) { requestNotifPermission(); showToast("🔔 Alerta activada · " + t); }
+  else showToast("🔕 Alerta desactivada · " + t);
+  renderAlertList();
+}
+
+function requestNotifPermission() {
+  if ("Notification" in window && Notification.permission === "default") Notification.requestPermission();
+}
+
+function checkAlerts() {
+  const now = new Date();
+  Object.keys(alertsEnabled).forEach(t => {
+    if (!alertsEnabled[t] || !SD[t]) return;
+    const hrs = (SD[t].earningsDate - now) / 36e5;
+    const key = "ee2_notif_" + t;
+    if (hrs > 0 && hrs <= 24 && !sessionStorage.getItem(key)) {
+      sessionStorage.setItem(key, "1");
+      const d = SD[t];
+      const banner = document.getElementById("notifBanner");
+      document.getElementById("notifTitle").textContent = "⚡ " + t + " presenta resultados en ~" + Math.round(hrs) + "h";
+      document.getElementById("notifBody").textContent = d.name + "\n" + d.time + " · EPS Est: $" + d.epsEst;
+      banner.classList.add("show");
+      setTimeout(() => banner.classList.remove("show"), 7000);
+      if ("Notification" in window && Notification.permission === "granted") {
+        new Notification("EarningsEdge ⚡ " + t, { body: d.name + " presenta en ~" + Math.round(hrs) + "h\nEPS Est: $" + d.epsEst });
+      }
+    }
+  });
+}
+setInterval(checkAlerts, 60000);
+checkAlerts();
+
+// ─────────────────────────────────────────────
+// RENDER FUNCTIONS
+// ─────────────────────────────────────────────
+function render() {
+  renderSidebar();
+  if (activeTab === "watchlist") renderWatchlistGrid();
+  if (activeTab === "calendar") renderCalendar();
+  if (activeTab === "upcoming") renderUpcoming();
+  if (activeTab === "analysis") renderAnalysis();
+}
+
+function renderSidebar() {
+  const el = document.getElementById("watchList");
+  if (!watchlist.length) { el.innerHTML = '<div style="color:var(--text-dim);font-size:11px;text-align:center;padding:16px">Añade empresas para empezar</div>'; return; }
+  el.innerHTML = watchlist.map(t => {
+    const d = SD[t]; if (!d) return "";
+    const sc = calcScore(t);
+    const dateStr = d.earningsDate.toLocaleDateString("es-ES",{day:"2-digit",month:"short"});
+    return '<div class="wcard ' + (activeStock===t?"active":"") + '" onclick="selectStock(\'' + t + '\')">' +
+      '<button class="wcard-remove" onclick="event.stopPropagation();removeStock(\'' + t + '\')">✕</button>' +
+      '<div class="wcard-top"><div class="wcard-ticker">' + t + '</div>' +
+      '<div class="wcard-badges">' +
+        '<div class="score-circle sc-' + sc.grade.toLowerCase() + '">' + sc.grade + '</div>' +
+        '<span class="sig-pill sig-' + d.signal + '">' + d.signal.toUpperCase() + '</span>' +
+      '</div></div>' +
+      '<div class="wcard-name">' + d.name + '</div>' +
+      '<div class="wcard-bottom">' +
+        '<span class="wcard-date">📅 ' + dateStr + '</span>' +
+        '<span class="wcard-price">$' + d.price + '</span>' +
+      '</div></div>';
+  }).join("");
+}
+
+function renderWatchlistGrid() {
+  const grid = document.getElementById("cardsGrid");
+  document.getElementById("wl-count").textContent = "(" + watchlist.length + ")";
+
+  // Top score highlight
+  const best = [...watchlist].filter(t => SD[t]).sort((a,b) => calcScore(b).score - calcScore(a).score)[0];
+  if (best) {
+    const sc = calcScore(best);
+    document.getElementById("wl-top-score").innerHTML = "MEJOR SCORE<br><span style='color:" + sc.color + ";font-size:18px;font-weight:700'>" + best + " · " + sc.score + "/100</span>";
+  }
+
+  if (!watchlist.length) {
+    grid.innerHTML = '<div class="empty-st"><div class="empty-icon">📊</div><div>Añade empresas a tu watchlist<br>usando el panel izquierdo</div></div>';
+    return;
+  }
+
+  grid.innerHTML = watchlist.map(t => {
+    const d = SD[t]; if (!d) return "";
+    const sc = calcScore(t);
+    const conf = confidence(t);
+    const sigColor = d.signal === "long" ? "var(--long)" : d.signal === "short" ? "var(--short)" : "var(--neutral)";
+    const confColor = conf >= 80 ? "var(--long)" : conf >= 60 ? "var(--neutral)" : "var(--short)";
+    const dateStr = d.earningsDate.toLocaleDateString("es-ES",{day:"2-digit",month:"short",year:"numeric"});
+
+    return '<div class="big-card" onclick="selectStock(\'' + t + '\')">' +
+      '<div class="bc-header">' +
+        '<div>' +
+          '<div class="bc-ticker">' + t + '</div>' +
+          '<div class="bc-name">' + d.name + '</div>' +
+        '</div>' +
+        '<div class="bc-conf" style="color:' + confColor + ';border-color:' + confColor + '">CONF ' + conf + '%</div>' +
+      '</div>' +
+      '<div class="bc-price">$' + d.price.toLocaleString() + '</div>' +
+      '<div class="conf-bar-wrap"><div class="conf-bar-bg"><div class="conf-bar-fill" style="width:' + conf + '%;background:' + confColor + '"></div></div></div>' +
+      '<div class="bc-signal" style="border-left-color:' + sigColor + '">' +
+        '<div class="bc-sig-label">IA SIGNAL · SCORE ' + sc.score + '/100</div>' +
+        '<div class="bc-sig-val" style="color:' + sigColor + '">' +
+          d.signal.toUpperCase() + ' &nbsp;<span style="font-size:12px;opacity:0.7">Nota ' + sc.grade + '</span>' +
+        '</div>' +
+        '<div class="bc-sig-reason">' + d.signalReason + '</div>' +
+      '</div>' +
+      '<div class="bc-footer">' +
+        '<div class="bc-earnings">📅 ' + dateStr + '</div>' +
+        '<div class="bc-score-row">' +
+          '<div class="score-circle sc-' + sc.grade.toLowerCase() + '" style="width:28px;height:28px;font-size:10px">' + sc.grade + '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join("");
+}
+
+function renderCalendar() {
+  const months = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  const days = ["LUN","MAR","MIÉ","JUE","VIE","SÁB","DOM"];
+  document.getElementById("calLabel").textContent = months[calDate.getMonth()] + " " + calDate.getFullYear();
+  const firstDay = new Date(calDate.getFullYear(), calDate.getMonth(), 1);
+  let startDow = firstDay.getDay(); startDow = startDow === 0 ? 6 : startDow - 1;
+  const daysInMonth = new Date(calDate.getFullYear(), calDate.getMonth()+1, 0).getDate();
+  const today = new Date();
+  let html = days.map(d => '<div class="cal-dl">' + d + '</div>').join("");
+  for (let i = 0; i < startDow; i++) html += '<div class="cal-day empty"></div>';
+  for (let day = 1; day <= daysInMonth; day++) {
+    const isToday = today.getDate()===day && today.getMonth()===calDate.getMonth() && today.getFullYear()===calDate.getFullYear();
+    const earnings = watchlist.filter(t => {
+      const d = SD[t];
+      return d && d.earningsDate.getDate()===day && d.earningsDate.getMonth()===calDate.getMonth() && d.earningsDate.getFullYear()===calDate.getFullYear();
+    });
+    html += '<div class="cal-day ' + (isToday?"today":"") + '">' +
+      '<div class="cal-dn">' + day + '</div>' +
+      earnings.map(t => '<div class="cal-earn ' + SD[t].signal + '" onclick="selectStock(\'' + t + '\')">' + t + '</div>').join("") +
+    '</div>';
+  }
+  document.getElementById("calGrid").innerHTML = html;
+}
+
+function renderUpcoming() {
+  const el = document.getElementById("upcomingList");
+  if (!watchlist.length) { el.innerHTML = '<div class="empty-st"><div class="empty-icon">📅</div><div>Añade empresas a tu watchlist</div></div>'; return; }
+  const sorted = [...watchlist].filter(t => SD[t]).sort((a,b) => SD[a].earningsDate - SD[b].earningsDate);
+  const sc_map = {};
+  sorted.forEach(t => sc_map[t] = calcScore(t));
+  el.innerHTML = sorted.map(t => {
+    const d = SD[t];
+    const sc = sc_map[t];
+    const month = d.earningsDate.toLocaleDateString("es-ES",{month:"short"}).toUpperCase();
+    const day = d.earningsDate.getDate();
+    const epsColor = d.signal==="long"?"var(--long)":d.signal==="short"?"var(--short)":"var(--neutral)";
+    return '<div class="up-item" onclick="selectStock(\'' + t + '\')">' +
+      '<div class="up-date-box"><div class="up-month">' + month + '</div><div class="up-day">' + day + '</div></div>' +
+      '<div class="up-info"><div class="up-ticker">' + t + '</div><div class="up-company">' + d.name + '</div><div class="up-time">🕐 ' + d.time + '</div></div>' +
+      '<div class="up-right"><div class="up-eps" style="color:' + epsColor + '">$' + d.epsEst + ' EPS</div><div class="up-eps-label">EST. ANALISTAS</div></div>' +
+      '<div class="score-circle sc-' + sc.grade.toLowerCase() + '" style="width:32px;height:32px;margin-left:10px">' + sc.grade + '</div>' +
+      '<span class="sig-pill sig-' + d.signal + '" style="margin-left:6px">' + d.signal.toUpperCase() + '</span>' +
+    '</div>';
+  }).join("");
+}
+
+function renderAnalysis() {
+  const el = document.getElementById("analysisPanel");
+  if (!activeStock || !SD[activeStock]) {
+    el.innerHTML = '<div class="empty-st"><div class="empty-icon">🔬</div><div>Selecciona una empresa para ver<br>el análisis completo de IA</div></div>';
+    return;
+  }
+  const d = SD[activeStock];
+  const sc = calcScore(activeStock);
+  const conf = confidence(activeStock);
+  const dateStr = d.earningsDate.toLocaleDateString("es-ES",{day:"2-digit",month:"long",year:"numeric"});
+  const upColor = d.upside >= 0 ? "var(--long)" : "var(--short)";
+  const beatCount = d.history.filter(h => h.beat).length;
+  const beatPct = Math.round(beatCount / d.history.length * 100);
+  const sigClass = d.signal + "-s";
+  const sigText = {long:"LONG 🚀",short:"SHORT 🔻",neutral:"NEUTRAL ⚖️"}[d.signal];
+  const confColor = conf >= 80 ? "var(--long)" : conf >= 60 ? "var(--neutral)" : "var(--short)";
+
+  // Score breakdown
+  const bk = sc.breakdown;
+  const sbItems = [
+    {label:"Beat Rate",val:bk.beatScore,max:25,disp:bk.beatPct+"%"},
+    {label:"Consenso Buy",val:bk.buyScore,max:25,disp:d.buyPct+"%"},
+    {label:"Upside",val:bk.upsideScore,max:25,disp:(d.upside>=0?"+":"")+d.upside+"%"},
+    {label:"Convicción",val:bk.sigScore,max:25,disp:d.signal.toUpperCase()},
+  ];
+  const sbHTML = sbItems.map(item => {
+    const pct = Math.round((item.val/item.max)*100);
+    const c = pct>=80?"var(--long)":pct>=50?"var(--neutral)":"var(--short)";
+    return '<div class="sb-item"><div class="sb-label">' + item.label + '</div>' +
+      '<div class="sb-val" style="color:' + c + '">' + item.val + '/25 · ' + item.disp + '</div>' +
+      '<div class="sb-bar"><div class="sb-fill" style="width:' + pct + '%;background:' + c + '"></div></div></div>';
+  }).join("");
+
+  const histBars = d.history.map(h => {
+    const absH = Math.abs(h.pct);
+    const maxH = Math.max(...d.history.map(x => Math.abs(x.pct)));
+    const height = Math.max(8, Math.round(absH / maxH * 100));
+    return '<div class="hbar ' + (h.beat?"beat":"miss") + '" style="height:' + height + '%" title="' + h.q + ': ' + (h.beat?"+":"") + h.pct + '%"><div class="hbar-label">' + h.q + '</div></div>';
+  }).join("");
+
+  const metricsRows = d.metrics.map(([l,v]) => '<tr><td>' + l + '</td><td>' + v + '</td></tr>').join("");
+  const buySell = [["Buy",d.buyPct,"var(--long)"],["Hold",d.holdPct,"var(--neutral)"],["Sell",d.sellPct,"var(--short)"]].map(([l,p,c]) =>
+    '<div class="est-row"><div class="est-lbl">' + l + '</div>' +
+    '<div class="est-bar-bg"><div class="est-fill" style="width:' + p + '%;background:' + c + '"></div></div>' +
+    '<div class="est-v" style="color:' + c + '">' + p + '%</div></div>'
+  ).join("");
+
+  el.innerHTML = '<div class="analysis-wrap">' +
+
+    // Hero
+    '<div class="analysis-hero">' +
+      '<div>' +
+        '<div class="a-ticker-big">' + activeStock + '</div>' +
+        '<div class="a-name">' + d.name + '</div>' +
+        '<div class="a-date">📅 Resultados: ' + dateStr + ' · ' + d.time + '</div>' +
+      '</div>' +
+      '<div style="text-align:right">' +
+        '<div class="a-price-big">$' + d.price.toLocaleString() + '</div>' +
+        '<div class="a-price-label">Precio actual</div>' +
+        '<div style="margin-top:6px"><span style="font-family:\'Space Mono\';font-size:11px;color:' + confColor + ';border:1px solid ' + confColor + ';padding:3px 9px;border-radius:5px">CONF. IA ' + conf + '%</span></div>' +
+      '</div>' +
+    '</div>' +
+
+    // Score card
+    '<div class="score-full-card">' +
+      '<div style="font-size:10px;letter-spacing:2px;color:var(--text-dim);font-family:\'Space Mono\';margin-bottom:14px">SCORE DE CONFIANZA</div>' +
+      '<div class="score-row-main">' +
+        '<div style="text-align:center;flex-shrink:0;padding-right:20px;border-right:1px solid var(--border)">' +
+          '<div class="score-num" style="color:' + sc.color + '">' + sc.score + '</div>' +
+          '<div class="score-grade-big sc-' + sc.grade.toLowerCase() + '" style="margin:8px auto">' + sc.grade + '</div>' +
+          '<div style="font-size:9px;color:var(--text-dim);font-family:\'Space Mono\'">/ 100 PTS</div>' +
+        '</div>' +
+        '<div class="score-breakdown-grid" style="padding-left:20px">' + sbHTML + '</div>' +
+      '</div>' +
+    '</div>' +
+
+    // Signal
+    '<div class="signal-full ' + sigClass + '">' +
+      '<div class="sf-glow"></div>' +
+      '<div class="sf-sub">SEÑAL DE TRADING · IA ENGINE</div>' +
+      '<div class="sf-main" style="color:' + (d.signal==="long"?"var(--long)":d.signal==="short"?"var(--short)":"var(--neutral)") + '">' + sigText + '</div>' +
+      '<div class="sf-reason">' + d.signalReason + '</div>' +
+    '</div>' +
+
+    // Metrics grid
+    '<div class="ag">' +
+      '<div class="atile"><div class="atile-label">EPS Estimado</div><div class="atile-big">' + (d.epsEst>=0?"$":"-$") + Math.abs(d.epsEst) + '</div><div class="atile-sub">Consenso ' + d.buyPct + '% analistas BUY</div></div>' +
+      '<div class="atile"><div class="atile-label">Revenue Estimado</div><div class="atile-big">$' + d.revEst + ' ' + d.revUnit + '</div><div class="atile-sub">Expectativa consenso</div></div>' +
+      '<div class="atile"><div class="atile-label">Price Target</div><div class="atile-big">$' + d.priceTarget + '</div><div class="atile-sub" style="color:' + upColor + '">' + (d.upside>=0?"▲":"▼") + ' ' + Math.abs(d.upside) + '% upside/downside</div></div>' +
+      '<div class="atile"><div class="atile-label">Beat Rate (6 trim.)</div><div class="atile-big" style="color:' + (beatPct>=60?"var(--long)":"var(--short)") + '">' + beatPct + '%</div><div class="atile-sub">' + beatCount + ' de ' + d.history.length + ' superados</div></div>' +
+      '<div class="atile"><div class="atile-label">Consenso Analistas</div>' + buySell + '</div>' +
+      '<div class="atile"><div class="atile-label">Métricas Clave</div><table class="m-table">' + metricsRows + '</table></div>' +
+      '<div class="atile ag-full"><div class="atile-label">Historial Sorpresas EPS · Últimos 6 Trimestres</div>' +
+        '<div style="display:flex;gap:10px;margin-bottom:6px;font-size:10px;font-family:\'Space Mono\'"><span style="color:var(--long)">■ BEAT</span><span style="color:var(--short)">■ MISS</span></div>' +
+        '<div class="hbars">' + histBars + '</div>' +
+      '</div>' +
+    '</div>' +
+
+  '</div>';
+}
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
 };
 
 // ─────────────────────────────────────────────
